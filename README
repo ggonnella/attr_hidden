@@ -1,0 +1,53 @@
+This is a Rails plugin, which was created for Rails 2.1
+but might work also for other Rails versions.
+
+It does not contain unit tests, so if you would like to 
+collaborate, this would be a nice addition.
+
+Although this plugin does not require STI, it is probably
+only really useful with single table inheritance.
+
+Example usage with STI
+======================
+
+Let's assume you have a table "entities" that was  
+created by this code: 
+
+  create_table :entities do |t|
+    t.string :type
+    t.string :title
+    t.string :first_name
+    t.string :last_name
+    t.binary :logo
+  end
+ 
+The idea is that Person and Organisation will be
+subclasses of Entity that use single table inheritance.
+
+As in our example world people have no logo and 
+organisations have no title, first name and last name, we 
+want to hide this columns from their respective classes:
+
+  class Entity < ActiveRecord::Base; end
+  
+  class Person
+    attr_hidden :logo
+  end
+
+  class Organisation
+    attr_hidden :title, :first_name, :last_name
+  end
+
+This is it. Person will have no logo anymore, Organisation
+will have no title, first_name or last_name. Entity will 
+of course retain all attributes. 
+
+Now it's possible to hide further attributes in subclasses.
+For example:
+
+  class UntitledPerson
+    attr_hidden :title
+  end
+
+UntitledPerson will have no logo (inherited from Person) 
+and no title, while Person will still have a title.
