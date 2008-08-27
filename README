@@ -32,7 +32,7 @@ end
 class Cricketer < Player
 end
 
-class Bowler < Player
+class Bowler < Cricketer
 end
 
 however when you use an object of the class Bowler you can still access "club",
@@ -55,8 +55,8 @@ class Cricketer < Player
   attr_hidden :club, :bowling_average
 end
 
-class Bowler < Player
-  attr_hidden :club
+class Bowler < Cricketer
+  attr_not_hidden :bowling_average
 end
 
 now each class sees only the columns which are meaningful in their own class.

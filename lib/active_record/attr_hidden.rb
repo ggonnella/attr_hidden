@@ -22,6 +22,16 @@ module ActiveRecord::AttrHidden
         @hidden_attributes += attrs.map(&:to_s)
       end
       
+      #
+      # If you want to show attributes in a subclass and you have hidden
+      # them in its superclass, you can unhide it using: 
+      # 
+      #    attr_not_hidden :attr1, :attr2, ...
+      #
+      def attr_not_hidden(*attrs)
+        @hidden_attributes -= attrs.map(&:to_s)
+      end
+      
       # list of attribute hidden in a model
       attr_reader :hidden_attributes
       
