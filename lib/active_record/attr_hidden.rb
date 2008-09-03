@@ -40,7 +40,27 @@ module ActiveRecord::AttrHidden
       end
       alias_method_chain :columns, :attr_hidden
       
-      private
+      #
+      # convenience methods to hide/unhide attributes *only* in all subclasses
+      # without hiding/unhiding them in the current class;
+      #
+      # this behaviour hiding/unhiding can be then overridden in single subclasses
+      # calling attr_hidden / attr_unhidden as appropriate
+      #
+      [:attr_hidden, :attr_not_hidden].each do |macro|
+        define_method "#{macro}_in_subclasses" do |*attrs|
+          (class << self; self; end).class_eval do
+            private
+            define_method "inherited_with_#{macro}_in_subclasses" do |subklass|
+              send("inherited_without_#{macro}_in_subclasses", subklass)
+              subklass.class_eval { send(*attrs.unshift(macro)) }
+            end
+            alias_method_chain :inherited, :"#{macro}_in_subclasses"
+          end
+        end
+      end
+    
+    private
       
       def instantiate_with_attr_hidden(record)
         instantiate_without_attr_hidden(record.delete_if{|k,v|@hidden_attributes.include?(k)})
@@ -58,4 +78,3 @@ module ActiveRecord::AttrHidden
   end
   
 end
-
