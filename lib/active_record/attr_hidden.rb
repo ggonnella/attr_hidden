@@ -1,10 +1,10 @@
 module ActiveRecord::AttrHidden
   
-  def self.included(base)    
+  def self.included(base)
     
     base.instance_variable_set("@hidden_attributes", [])
     
-    class << base 
+    class << base
       
       #
       # Hide any number of attributes in a model.
@@ -15,8 +15,8 @@ module ActiveRecord::AttrHidden
       # object hierarchy), and can hide further attributes.
       #
       # usage:
-      #      
-      #   attr_hidden :attr1, :attr2, ...
+      #
+      # attr_hidden :attr1, :attr2, ...
       #
       def attr_hidden(*attrs)
         @hidden_attributes += attrs.map(&:to_s)
@@ -24,9 +24,9 @@ module ActiveRecord::AttrHidden
       
       #
       # If you want to show attributes in a subclass and you have hidden
-      # them in its superclass, you can unhide it using: 
-      # 
-      #    attr_not_hidden :attr1, :attr2, ...
+      # them in its superclass, you can unhide it using:
+      #
+      # attr_not_hidden :attr1, :attr2, ...
       #
       def attr_not_hidden(*attrs)
         @hidden_attributes -= attrs.map(&:to_s)
@@ -58,3 +58,4 @@ module ActiveRecord::AttrHidden
   end
   
 end
+
