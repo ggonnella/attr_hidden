@@ -36,7 +36,9 @@ module ActiveRecord::AttrHidden
       attr_reader :hidden_attributes
       
       def columns_with_attr_hidden
-        columns_without_attr_hidden.delete_if{|c|@hidden_attributes.include?(c.name)}
+        columns_without_attr_hidden.delete_if do |c|
+          @hidden_attributes ? @hidden_attributes.include?(c.name) : false
+        end
       end
       alias_method_chain :columns, :attr_hidden
       
@@ -86,7 +88,9 @@ module ActiveRecord::AttrHidden
     private
       
       def instantiate_with_attr_hidden(record)
-        instantiate_without_attr_hidden(record.delete_if{|k,v|@hidden_attributes.include?(k)})
+        instantiate_without_attr_hidden(record.delete_if do |k,v|
+          @hidden_attributes ? @hidden_attributes.include?(k) : false
+        end)
       end
       alias_method_chain :instantiate, :attr_hidden
       
