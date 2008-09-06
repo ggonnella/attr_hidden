@@ -16,10 +16,10 @@ http://www.martinfowler.com/eaaCatalog/singleTableInheritance.html
 table players:
 name, club, batting_average, bowling_average, type
 
-type may be: “Footballer”, “Cricketer”, “Bowler”
+type may be: Footballer, Cricketer, Bowler
 
 The attribute bowling_average will always be NULL in any record with type 
-Cricketer or Footballer. The same is true for “club” in Cricketer or Bowler. 
+Cricketer or Footballer. The same is true for club in Cricketer or Bowler. 
 
 so using ActiveRecord you have: 
 
